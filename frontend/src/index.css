@@ -1,0 +1,232 @@
+:root {
+  /* Institutional Palette: Warm Ivory, Charcoal, Stone & Restrained Bronze */
+  --bg-canvas: #FBFBFA;
+  --bg-surface: #FFFFFF;
+  --bg-surface-subdued: #F5F4F0;
+  --bg-hover: #F0EFEA;
+  --bg-active: #EAE8E1;
+
+  --border-hairline: #E4E1D9;
+  --border-muted: #D6D2C8;
+  --border-strong: #A8A49A;
+
+  --text-primary: #121316;
+  --text-secondary: #58554F;
+  --text-muted: #8A867E;
+
+  --accent-bronze: #9E6B47;
+  --accent-bronze-hover: #865634;
+  --accent-bronze-light: #F7EFE9;
+
+  --semantic-green: #2B573D;
+  --semantic-green-bg: #EAF2ED;
+  --semantic-amber: #875C24;
+  --semantic-amber-bg: #F9F3EA;
+  --semantic-crimson: #8C2E2E;
+  --semantic-crimson-bg: #F8EDED;
+  --semantic-slate: #2B4356;
+  --semantic-slate-bg: #ECF1F5;
+
+  --font-serif: 'Newsreader', Georgia, 'Times New Roman', serif;
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--bg-canvas);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  min-height: 100vh;
+  line-height: 1.5;
+}
+
+/* Typography Utilities */
+.font-serif {
+  font-family: var(--font-serif);
+}
+
+.font-sans {
+  font-family: var(--font-sans);
+}
+
+.font-mono {
+  font-family: var(--font-mono);
+}
+
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Hairline dividers & borders */
+.hairline-b {
+  border-bottom: 1px solid var(--border-hairline);
+}
+
+.hairline-t {
+  border-top: 1px solid var(--border-hairline);
+}
+
+.hairline-r {
+  border-right: 1px solid var(--border-hairline);
+}
+
+.hairline-l {
+  border-left: 1px solid var(--border-hairline);
+}
+
+.hairline-all {
+  border: 1px solid var(--border-hairline);
+}
+
+/* Restrained Institutional Badges */
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 8px;
+  border-radius: 4px;
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.status-pill-green {
+  background: var(--semantic-green-bg);
+  color: var(--semantic-green);
+}
+
+.status-pill-amber {
+  background: var(--semantic-amber-bg);
+  color: var(--semantic-amber);
+}
+
+.status-pill-crimson {
+  background: var(--semantic-crimson-bg);
+  color: var(--semantic-crimson);
+}
+
+.status-pill-slate {
+  background: var(--semantic-slate-bg);
+  color: var(--semantic-slate);
+}
+
+.status-pill-neutral {
+  background: var(--bg-surface-subdued);
+  color: var(--text-secondary);
+}
+
+/* Restrained Institutional Buttons */
+.btn-institutional {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: 4px;
+  font-size: 0.82rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  border: 1px solid transparent;
+  outline: none;
+  text-decoration: none;
+}
+
+.btn-institutional-primary {
+  background: var(--text-primary);
+  color: var(--bg-canvas);
+  border-color: var(--text-primary);
+}
+
+.btn-institutional-primary:hover:not(:disabled) {
+  background: #2C2D32;
+  border-color: #2C2D32;
+}
+
+.btn-institutional-bronze {
+  background: var(--accent-bronze);
+  color: #FFFFFF;
+  border-color: var(--accent-bronze);
+}
+
+.btn-institutional-bronze:hover:not(:disabled) {
+  background: var(--accent-bronze-hover);
+}
+
+.btn-institutional-secondary {
+  background: var(--bg-surface);
+  color: var(--text-primary);
+  border-color: var(--border-muted);
+}
+
+.btn-institutional-secondary:hover:not(:disabled) {
+  background: var(--bg-hover);
+  border-color: var(--border-strong);
+}
+
+.btn-institutional:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+/* Precision Data Tables */
+.institutional-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 0.84rem;
+}
+
+.institutional-table th {
+  padding: 10px 16px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+  border-bottom: 1px solid var(--border-hairline);
+  background: var(--bg-canvas);
+}
+
+.institutional-table td {
+  padding: 14px 16px;
+  color: var(--text-primary);
+  border-bottom: 1px solid var(--border-hairline);
+  vertical-align: middle;
+}
+
+.institutional-table tbody tr {
+  transition: background-color 0.12s ease;
+}
+
+.institutional-table tbody tr:hover {
+  background-color: var(--bg-hover);
+}
+
+/* Custom minimal scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-canvas);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-muted);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
+}

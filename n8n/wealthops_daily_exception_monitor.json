@@ -1,0 +1,143 @@
+{
+  "name": "WealthOps - Daily Portfolio Exception Monitor & Fiduciary Breach Dispatcher",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 8 * * 1-5"
+            }
+          ]
+        }
+      },
+      "id": "node-cron-trigger",
+      "name": "Cron (08:00 AM Mon-Fri)",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.1,
+      "position": [200, 300]
+    },
+    {
+      "parameters": {
+        "url": "http://127.0.0.1:8000/api/automation/daily-monitor",
+        "method": "POST",
+        "authentication": "none",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-User-Role",
+              "value": "ADMIN"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "options": {
+          "timeout": 30000
+        }
+      },
+      "id": "node-wealthops-api",
+      "name": "WealthOps Scan Portfolios API",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [440, 300]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "number": [
+            {
+              "value1": "={{ $json.policy_breaches_detected }}",
+              "operation": "larger",
+              "value2": 0
+            }
+          ]
+        }
+      },
+      "id": "node-filter-breaches",
+      "name": "Check If Breaches > 0",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [680, 300]
+    },
+    {
+      "parameters": {
+        "subject": "=🚨 WealthOps Alert: {{ $json.policy_breaches_detected }} Portfolio Policy Breaches Detected",
+        "message": "=The scheduled morning exception scan identified {{ $json.policy_breaches_detected }} portfolios outside documented Investment Policy Statement (IPS) tolerances.\n\nSummary:\n{{ JSON.stringify($json.exceptions, null, 2) }}\n\nAction Required: Operations analysts must review the WealthOps Dashboard and formulate rebalancing recommendations. Orders require Risk Officer dual approval prior to execution.",
+        "options": {}
+      },
+      "id": "node-notify-analysts",
+      "name": "Send Ops Team Notification",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2,
+      "position": [920, 240]
+    },
+    {
+      "parameters": {
+        "values": {
+          "string": [
+            {
+              "name": "status",
+              "value": "ALL_PORTFOLIOS_COMPLIANT"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "node-no-breaches",
+      "name": "Log Fiduciary Clean Run",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 2,
+      "position": [920, 380]
+    }
+  ],
+  "connections": {
+    "Cron (08:00 AM Mon-Fri)": {
+      "main": [
+        [
+          {
+            "node": "WealthOps Scan Portfolios API",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "WealthOps Scan Portfolios API": {
+      "main": [
+        [
+          {
+            "node": "Check If Breaches > 0",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check If Breaches > 0": {
+      "main": [
+        [
+          {
+            "node": "Send Ops Team Notification",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Log Fiduciary Clean Run",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  }
+}

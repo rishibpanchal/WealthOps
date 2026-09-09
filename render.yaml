@@ -1,0 +1,37 @@
+services:
+  # WealthOps FastAPI Backend Service
+  - type: web
+    name: wealthops-backend
+    env: python
+    rootDir: backend
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.9
+      - key: DEFAULT_LLM_PROVIDER
+        value: smart_mock
+      - key: STRICT_POLICY_ENFORCEMENT
+        value: "true"
+      - key: MAX_REBALANCE_CHANGE_PCT
+        value: "5.0"
+      - key: MAX_TRANSACTION_VALUE_USD
+        value: "100000.0"
+
+  # WealthOps React Frontend Static Site
+  - type: web
+    name: wealthops-frontend
+    env: static
+    rootDir: frontend
+    buildCommand: npm install && npm run build
+    staticPublishPath: ./dist
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
+    envVars:
+      - key: VITE_API_URL
+        fromService:
+          type: web
+          name: wealthops-backend
+          property: host
