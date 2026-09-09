@@ -16,6 +16,7 @@ import {
 } from 'lucide-react';
 import { UserRole, AgentRunResponse, StepEvent } from '../types';
 import { api, USER_PROFILES } from '../api';
+import { InstitutionalMarkdown } from './InstitutionalMarkdown';
 
 interface AgentConsoleProps {
   currentRole: UserRole;
@@ -351,16 +352,12 @@ export const AgentConsole: React.FC<AgentConsoleProps> = ({
             </div>
 
             <div style={{
-              background: 'rgba(15, 23, 42, 0.8)',
-              border: '1px solid var(--border-subtle)',
-              borderRadius: '8px',
+              background: 'var(--bg-surface)',
+              border: '1px solid var(--border-hairline)',
+              borderRadius: '6px',
               padding: '1.2rem',
-              fontSize: '0.88rem',
-              lineHeight: '1.6',
-              color: '#e2e8f0',
-              whiteSpace: 'pre-line',
             }}>
-              {agentResponse.final_response}
+              <InstitutionalMarkdown content={agentResponse.final_response} />
             </div>
 
             {agentResponse.approval_required && (

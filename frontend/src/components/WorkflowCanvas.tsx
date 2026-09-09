@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { AgentRunResponse } from '../types';
+import { InstitutionalMarkdown } from './InstitutionalMarkdown';
 
 interface WorkflowCanvasProps {
   currentResponse: AgentRunResponse | null;
@@ -328,15 +329,7 @@ export const WorkflowCanvas: React.FC<WorkflowCanvasProps> = ({
             </span>
           </div>
 
-          <div style={{
-            fontSize: '0.88rem',
-            lineHeight: 1.7,
-            color: 'var(--text-primary)',
-            whiteSpace: 'pre-line',
-            fontFamily: 'inherit',
-          }}>
-            {currentResponse.final_response}
-          </div>
+          <InstitutionalMarkdown content={currentResponse.final_response} />
 
           {currentResponse.approval_required && (
             <div style={{

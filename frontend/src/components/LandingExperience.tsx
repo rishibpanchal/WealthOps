@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { LivingFinancialVisual } from './LivingFinancialVisual';
 import { AgentRunResponse } from '../types';
 import { api } from '../api';
+import { InstitutionalMarkdown } from './InstitutionalMarkdown';
 
 interface LandingExperienceProps {
   onEnterPlatform: () => void;
@@ -517,9 +518,7 @@ export const LandingExperience: React.FC<LandingExperienceProps> = ({
                 Inspect in Command Center →
               </button>
             </div>
-            <div style={{ fontSize: '0.9rem', lineHeight: 1.7, color: '#121316', whiteSpace: 'pre-line' }}>
-              {dispatchResult.final_response}
-            </div>
+            <InstitutionalMarkdown content={dispatchResult.final_response} />
           </div>
         )}
       </section>
