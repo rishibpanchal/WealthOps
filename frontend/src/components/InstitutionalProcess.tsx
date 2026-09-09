@@ -79,7 +79,7 @@ export const InstitutionalProcess: React.FC<InstitutionalProcessProps> = ({
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', borderBottom: '1px solid var(--border-hairline)', paddingBottom: '16px', marginBottom: '20px' }}>
           <div>
             <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.3rem', fontWeight: 400, color: 'var(--text-primary)' }}>
-              Scheduled Portfolio Exception Sweep (08:00 AM EST Cron)
+              Scheduled Portfolio Exception Sweep (08:00 AM IST Cron)
             </h3>
             <p style={{ fontSize: '0.82rem', color: 'var(--text-secondary)', marginTop: '4px' }}>
               Simulates automated recurrence trigger from Power Automate or n8n calling the WealthOps gateway.

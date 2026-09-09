@@ -30,9 +30,10 @@ class Settings(BaseSettings):
     ANTHROPIC_API_KEY: str = ""
     DEFAULT_LLM_PROVIDER: str = "smart_mock"  # "smart_mock", "gemini", "openai", "anthropic"
 
-    # Deterministic Guardrails & Risk Limits
+    # Deterministic Guardrails & Risk Limits (Indian Standard & Fiduciary Thresholds)
     MAX_REBALANCE_CHANGE_PCT: float = 5.0  # Any allocation shift > 5% requires Risk Officer dual approval
-    MAX_TRANSACTION_VALUE_USD: float = 100000.0  # Rebalance value > $100k requires approval
+    MAX_TRANSACTION_VALUE_INR: float = 1000000.0  # Rebalance value > ₹10,00,000 (10 Lakhs) requires dual approval
+    MAX_TRANSACTION_VALUE_USD: float = 1000000.0  # Backward-compatible threshold
     CONFIDENCE_THRESHOLD: float = 0.85  # Model confidence below 0.85 triggers human escalation
     STRICT_POLICY_ENFORCEMENT: bool = True
 

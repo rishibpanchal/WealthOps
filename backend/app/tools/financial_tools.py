@@ -347,7 +347,7 @@ async def generate_report(client_id: str, report_type: str = "FULL_RISK", sessio
 
     report_content += f"""
 2. RISK & PERFORMANCE METRICS:
-   - 1-Day Parametric VaR (95%): {var_metrics['var_pct_1d']}% (${var_metrics['var_amount_usd']:,.2f})
+   - 1-Day Parametric VaR (95%): {var_metrics['var_pct_1d']}% (₹{var_metrics['var_amount_usd']:,.2f})
    - Annualized Sharpe Ratio: {sharpe_metrics['sharpe_ratio']} ({sharpe_metrics['rating']})
    - Expected Annual Return: {sharpe_metrics['expected_return_annual']}%
 
@@ -408,7 +408,7 @@ async def create_rebalance_recommendation(
         "recommendations": recommendations,
         "total_rebalance_amount_usd": round(total_rebalance_val, 2),
         "requires_human_approval": requires_approval,
-        "governance_note": "Per Policy SOP-WM-402, shifts > 5% or value > $100,000 mandate Risk Officer review prior to execution.",
+        "governance_note": "Per Policy SOP-WM-402, shifts > 5% or value > ₹10,00,000 mandate Risk Officer review prior to execution.",
     }
 
 

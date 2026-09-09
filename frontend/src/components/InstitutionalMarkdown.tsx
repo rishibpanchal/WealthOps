@@ -21,6 +21,8 @@ export const InstitutionalMarkdown: React.FC<Props> = ({ content, className }) =
   const [copiedId, setCopiedId] = useState<string | null>(null);
 
   if (!content) return null;
+  // Normalize all currency references from $ to ₹
+  const normalizedContent = content.replace(/\$/g, '₹');
 
   const handleCopy = (text: string) => {
     navigator.clipboard.writeText(text);
@@ -129,7 +131,7 @@ export const InstitutionalMarkdown: React.FC<Props> = ({ content, className }) =
   };
 
   // Pre-process sections
-  const lines = content.split('\n');
+  const lines = normalizedContent.split('\n');
   const blocks: React.ReactNode[] = [];
   let currentKeyValues: { key: string; value: string }[] = [];
   let currentAdjustments: { asset: string; action: string; amount: string; detail: string }[] = [];
@@ -177,7 +179,7 @@ export const InstitutionalMarkdown: React.FC<Props> = ({ content, className }) =
             </span>
             <span
               style={{
-                fontFamily: item.value.includes('$') || /[\d.%]/.test(item.value) ? 'var(--font-mono, monospace)' : 'inherit',
+                fontFamily: item.value.includes('₹') || item.value.includes('$') || /[\d.%]/.test(item.value) ? 'var(--font-mono, monospace)' : 'inherit',
                 fontSize: '1.05rem',
                 fontWeight: 600,
                 color: 'var(--text-primary, #121316)',
@@ -422,8 +424,8 @@ export const InstitutionalMarkdown: React.FC<Props> = ({ content, className }) =
     }
 
     // Bullet with Adjustment Pattern:
-    // - **Asset**: ACTION ~$Amount (details)
-    const adjMatch = line.match(/^-\s+\*\*([^*]+)\*\*:\s*([A-Z_]+)\s+([~$\d,.]+)\s*\(([^)]+)\)/i);
+    // - **Asset**: ACTION ~₹Amount (details)
+    const adjMatch = line.match(/^-\s+\*\*([^*]+)\*\*:\s*([A-Z_]+)\s+([~₹$\d,.]+)\s*\(([^)]+)\)/i);
     if (adjMatch) {
       currentAdjustments.push({
         asset: adjMatch[1].trim(),

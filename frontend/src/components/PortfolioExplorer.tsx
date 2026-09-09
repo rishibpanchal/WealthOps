@@ -15,6 +15,7 @@ import {
 } from 'lucide-react';
 import { UserRole, ClientSummary, ClientDetail } from '../types';
 import { api } from '../api';
+import { formatINR } from '../utils/formatters';
 
 interface PortfolioExplorerProps {
   currentRole: UserRole;
@@ -174,7 +175,7 @@ export const PortfolioExplorer: React.FC<PortfolioExplorerProps> = ({
                       </span>
                     </td>
                     <td style={{ padding: '12px 16px', textAlign: 'right', fontWeight: 600, color: '#f8fafc' }}>
-                      ${c.aum.toLocaleString('en-US', { minimumFractionDigits: 0 })}
+                      {formatINR(c.aum)}
                     </td>
                     <td style={{ padding: '12px 16px', textAlign: 'right', fontWeight: 700, color: isBreach ? '#fb7185' : '#34d399' }}>
                       {c.equity_pct}%
@@ -250,7 +251,7 @@ export const PortfolioExplorer: React.FC<PortfolioExplorerProps> = ({
             <div style={{ background: '#131c31', padding: '10px', borderRadius: '8px', border: '1px solid var(--border-subtle)' }}>
               <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>Portfolio Value</div>
               <div style={{ fontSize: '1.1rem', fontWeight: 700, color: '#f8fafc' }}>
-                ${clientDetail.portfolio.total_value.toLocaleString()}
+                {formatINR(clientDetail.portfolio.total_value)}
               </div>
             </div>
             <div style={{ background: '#131c31', padding: '10px', borderRadius: '8px', border: '1px solid var(--border-subtle)' }}>
@@ -329,7 +330,7 @@ export const PortfolioExplorer: React.FC<PortfolioExplorerProps> = ({
                     <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>{h.asset_class}</div>
                   </div>
                   <div style={{ textAlign: 'right' }}>
-                    <div style={{ fontWeight: 600, color: '#f8fafc' }}>${h.market_value.toLocaleString()}</div>
+                    <div style={{ fontWeight: 600, color: '#f8fafc' }}>{formatINR(h.market_value)}</div>
                     <div style={{ fontSize: '0.72rem', color: '#60a5fa' }}>{h.weight_pct}% weight</div>
                   </div>
                 </div>

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { UserRole, ApprovalItem } from '../types';
 import { api, USER_PROFILES } from '../api';
+import { formatINR, formatIST } from '../utils/formatters';
 
 interface InstitutionalApprovalsProps {
   currentRole: UserRole;
@@ -204,7 +205,7 @@ export const InstitutionalApprovals: React.FC<InstitutionalApprovalsProps> = ({
                     </div>
 
                     <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>
-                      Ticket ID: {ticket.id} · Requested by {ticket.requested_by_role} ({ticket.requested_by_user_id}) · {new Date(ticket.created_at).toLocaleString()}
+                      Ticket ID: {ticket.id} · Requested by {ticket.requested_by_role} ({ticket.requested_by_user_id}) · {formatIST(ticket.created_at)}
                     </div>
                   </div>
 
@@ -218,7 +219,7 @@ export const InstitutionalApprovals: React.FC<InstitutionalApprovalsProps> = ({
                       color: 'var(--text-primary)',
                       fontVariantNumeric: 'tabular-nums',
                     }}>
-                      ${ticket.estimated_value.toLocaleString('en-US', { minimumFractionDigits: 2 })}
+                      {formatINR(ticket.estimated_value, { decimals: 2 })}
                     </div>
                   </div>
                 </div>
@@ -255,7 +256,7 @@ export const InstitutionalApprovals: React.FC<InstitutionalApprovalsProps> = ({
                             <th>Security / Asset Class</th>
                             <th style={{ textAlign: 'right' }}>Current Allocation</th>
                             <th style={{ textAlign: 'right' }}>Target Allocation</th>
-                            <th style={{ textAlign: 'right' }}>Order Amount (USD)</th>
+                            <th style={{ textAlign: 'right' }}>Order Amount (INR)</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -276,7 +277,7 @@ export const InstitutionalApprovals: React.FC<InstitutionalApprovalsProps> = ({
                                   {adj.target_pct ? `${adj.target_pct}%` : '—'}
                                 </td>
                                 <td style={{ textAlign: 'right', fontWeight: 600, fontVariantNumeric: 'tabular-nums' }}>
-                                  ${(adj.amount_usd || adj.estimated_amount_usd || 0).toLocaleString('en-US', { minimumFractionDigits: 2 })}
+                                  {formatINR(adj.amount_usd || adj.estimated_amount_usd || 0, { decimals: 2 })}
                                 </td>
                               </tr>
                             );

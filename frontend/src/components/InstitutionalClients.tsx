@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { UserRole, ClientSummary, ClientDetail } from '../types';
 import { api } from '../api';
+import { formatINR } from '../utils/formatters';
 
 interface InstitutionalClientsProps {
   currentRole: UserRole;
@@ -169,7 +170,7 @@ export const InstitutionalClients: React.FC<InstitutionalClientsProps> = ({
                       {c.risk_tolerance}
                     </td>
                     <td style={{ textAlign: 'right', fontWeight: 600, fontVariantNumeric: 'tabular-nums' }}>
-                      ${c.aum.toLocaleString('en-US', { minimumFractionDigits: 0 })}
+                      {formatINR(c.aum)}
                     </td>
                     <td style={{
                       textAlign: 'right',
@@ -246,7 +247,7 @@ export const InstitutionalClients: React.FC<InstitutionalClientsProps> = ({
             </h2>
 
             <div style={{ display: 'flex', gap: '16px', marginTop: '8px', fontSize: '0.78rem', color: 'var(--text-secondary)' }}>
-              <span>AUM: <strong style={{ color: 'var(--text-primary)' }}>${clientDetail.client.aum.toLocaleString()}</strong></span>
+              <span>AUM: <strong style={{ color: 'var(--text-primary)' }}>{formatINR(clientDetail.client.aum)}</strong></span>
               <span>Risk Tier: <strong style={{ color: 'var(--text-primary)' }}>{clientDetail.client.risk_tolerance}</strong></span>
               <span>
                 IPS Status:{' '}
@@ -287,13 +288,13 @@ export const InstitutionalClients: React.FC<InstitutionalClientsProps> = ({
                 <div style={{ padding: '16px', borderRadius: '4px', background: 'var(--bg-surface)', border: '1px solid var(--border-hairline)' }}>
                   <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)', textTransform: 'uppercase' }}>Net Market Value</div>
                   <div style={{ fontFamily: 'var(--font-serif)', fontSize: '1.4rem', color: 'var(--text-primary)', marginTop: '4px', fontVariantNumeric: 'tabular-nums' }}>
-                    ${clientDetail.portfolio.total_value.toLocaleString()}
+                    {formatINR(clientDetail.portfolio.total_value)}
                   </div>
                 </div>
                 <div style={{ padding: '16px', borderRadius: '4px', background: 'var(--bg-surface)', border: '1px solid var(--border-hairline)' }}>
                   <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)', textTransform: 'uppercase' }}>Available Cash</div>
                   <div style={{ fontFamily: 'var(--font-serif)', fontSize: '1.4rem', color: 'var(--text-primary)', marginTop: '4px', fontVariantNumeric: 'tabular-nums' }}>
-                    ${clientDetail.portfolio.cash_balance.toLocaleString()}
+                    {formatINR(clientDetail.portfolio.cash_balance)}
                   </div>
                 </div>
               </div>
@@ -319,7 +320,7 @@ export const InstitutionalClients: React.FC<InstitutionalClientsProps> = ({
               <div style={{ padding: '16px', borderRadius: '4px', background: 'var(--bg-surface)', border: '1px solid var(--border-hairline)' }}>
                 <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)', textTransform: 'uppercase' }}>1-Day 95% Parametric VaR</div>
                 <div style={{ fontFamily: 'var(--font-serif)', fontSize: '1.5rem', color: 'var(--semantic-crimson)', marginTop: '4px', fontVariantNumeric: 'tabular-nums' }}>
-                  {clientDetail.risk_metrics.var_pct_1d}% (${clientDetail.risk_metrics.var_amount_usd.toLocaleString()})
+                  {clientDetail.risk_metrics.var_pct_1d}% ({formatINR(clientDetail.risk_metrics.var_amount_usd)})
                 </div>
                 <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginTop: '4px' }}>
                   Calculated using asset class covariance and 252-day annualized historical volatility.
@@ -382,7 +383,7 @@ export const InstitutionalClients: React.FC<InstitutionalClientsProps> = ({
                     <tr key={i}>
                       <td style={{ fontWeight: 600 }}>{h.ticker}</td>
                       <td style={{ color: 'var(--text-secondary)', fontSize: '0.75rem' }}>{h.asset_class}</td>
-                      <td style={{ textAlign: 'right', fontVariantNumeric: 'tabular-nums' }}>${h.market_value.toLocaleString()}</td>
+                      <td style={{ textAlign: 'right', fontVariantNumeric: 'tabular-nums' }}>{formatINR(h.market_value)}</td>
                       <td style={{ textAlign: 'right', fontVariantNumeric: 'tabular-nums', fontWeight: 600 }}>{h.weight_pct}%</td>
                     </tr>
                   ))}

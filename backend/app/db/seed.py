@@ -56,8 +56,8 @@ When a rebalance recommendation is created:
 1. The operations analyst must calculate the required percentage drift for each asset class back toward target weights.
 2. Estimated gross transaction value must be calculated using latest end-of-day market prices.
 3. Tax implications and transaction costs must be minimized through lot selection (HIFO / Tax-Advantaged matching).
-4. If proposed rebalancing shift is <= 5.0% and total value <= $100,000, Operations Analyst approval is sufficient.
-5. If proposed rebalancing shift > 5.0% OR total value > $100,000, action is classified as SENSITIVE and MUST be routed to the Risk Officer Approval Queue. Direct execution by AI agents or automated bots without signed human approval is strictly forbidden.
+4. If proposed rebalancing shift is <= 5.0% and total value <= ₹10,00,000, Operations Analyst approval is sufficient.
+5. If proposed rebalancing shift > 5.0% OR total value > ₹10,00,000, action is classified as SENSITIVE and MUST be routed to the Risk Officer Approval Queue. Direct execution by AI agents or automated bots without signed human approval is strictly forbidden.
 """
     },
     {
@@ -353,7 +353,7 @@ async def seed_database():
             action_type="REBALANCE_RECOMMENDATION",
             status="PENDING",
             risk_level="HIGH",
-            reason="Equity allocation is 67.2%, breaching documented IPS maximum of 60.0% (+7.2% breach). Proposed trim of $205,200.00 across AAPL and MSFT.",
+            reason="Equity allocation is 67.2%, breaching documented IPS maximum of 60.0% (+7.2% breach). Proposed trim of ₹20,52,000.00 across AAPL and MSFT.",
             estimated_value=205200.0,
             policy_reference="Institutional Investment Policy Statement (IPS) Standard Framework (v2.4)",
             proposed_payload=json.dumps({

@@ -71,8 +71,10 @@ class GuardrailEngine:
         reasons = []
         is_sensitive = False
 
-        if total_amount_usd > settings.MAX_TRANSACTION_VALUE_USD:
-            reasons.append(f"Estimated value (${total_amount_usd:,.2f}) exceeds threshold (${settings.MAX_TRANSACTION_VALUE_USD:,.2f})")
+        limit_val = getattr(settings, "MAX_TRANSACTION_VALUE_INR", settings.MAX_TRANSACTION_VALUE_USD)
+        if total_amount_usd > limit_val:
+            from app.agents.llm_provider import format_inr
+            reasons.append(f"Estimated value ({format_inr(total_amount_usd)}) exceeds threshold ({format_inr(limit_val)})")
             is_sensitive = True
 
         if max_adjustment_pct > settings.MAX_REBALANCE_CHANGE_PCT:

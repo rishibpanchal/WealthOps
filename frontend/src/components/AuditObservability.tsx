@@ -14,6 +14,7 @@ import {
 } from 'lucide-react';
 import { UserRole, AuditRecord, ObservabilityStats } from '../types';
 import { api } from '../api';
+import { formatIST } from '../utils/formatters';
 
 interface AuditObservabilityProps {
   currentRole: UserRole;
@@ -187,7 +188,7 @@ export const AuditObservability: React.FC<AuditObservabilityProps> = ({ currentR
                     className="portfolio-row"
                   >
                     <td style={{ padding: '10px 14px', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', fontSize: '0.75rem' }}>
-                      {log.timestamp ? new Date(log.timestamp).toLocaleTimeString() : 'N/A'}
+                      {log.timestamp ? formatIST(log.timestamp) : 'N/A'}
                     </td>
                     <td style={{ padding: '10px 14px', fontFamily: 'var(--font-mono)', color: '#60a5fa', fontWeight: 600 }}>
                       {log.request_id}

@@ -4,6 +4,29 @@ from typing import Dict, Any, List, Optional
 from app.core.config import settings
 
 
+def format_inr(val: float) -> str:
+    """Format numeric value in Indian Rupee format e.g. ₹84,00,000.00"""
+    try:
+        s = f"{float(val):.2f}"
+        parts = s.split(".")
+        int_part, dec_part = parts[0], parts[1]
+        if len(int_part) > 3:
+            last_three = int_part[-3:]
+            remaining = int_part[:-3]
+            groups = []
+            while len(remaining) > 2:
+                groups.insert(0, remaining[-2:])
+                remaining = remaining[:-2]
+            if remaining:
+                groups.insert(0, remaining)
+            formatted = ",".join(groups) + "," + last_three
+        else:
+            formatted = int_part
+        return f"₹{formatted}.{dec_part}"
+    except Exception:
+        return f"₹{val:,.2f}"
+
+
 class BaseLLMProvider:
     async def classify_intent(self, user_query: str) -> Dict[str, Any]:
         raise NotImplementedError
@@ -87,7 +110,7 @@ class SmartDeterministicProvider(BaseLLMProvider):
                 {"step": 3, "action": "check_policy_drift", "tool": "check_policy", "description": "Compare asset weights against client IPS limits"},
                 {"step": 4, "action": "retrieve_rebalance_policy", "tool": "rag_search", "description": "Retrieve SOP-WM-402 rebalance thresholds"},
                 {"step": 5, "action": "formulate_rebalance_orders", "tool": "create_rebalance_recommendation", "description": "Calculate exact buy/sell trade adjustments"},
-                {"step": 6, "action": "guardrail_risk_assessment", "tool": "guardrail_check", "description": "Deterministic check for $100k / 5% drift threshold"},
+                {"step": 6, "action": "guardrail_risk_assessment", "tool": "guardrail_check", "description": "Deterministic check for ₹10 Lakhs / 5% drift threshold"},
                 {"step": 7, "action": "route_approval_or_execute", "tool": "request_approval", "description": "Route to Risk Officer queue or prepare execution"},
             ],
             "PORTFOLIO_RISK_ANALYSIS": [
@@ -137,7 +160,7 @@ class SmartDeterministicProvider(BaseLLMProvider):
                     res += f"- **Client {b['client_id']} ({b['client_name']})**: {b['breach_summary']}\n"
                 res += f"\n**Institutional Policy Grounding (SOP-WM-402)**:\n"
                 res += f"Portfolios exhibiting asset class drift exceeding permitted IPS maximums require formal rebalancing recommendations. "
-                res += f"Shifts involving > 5.0% allocation adjustment or transaction values > $100,000 mandate **Risk Officer dual approval** prior to trade routing."
+                res += f"Shifts involving > 5.0% allocation adjustment or transaction values > ₹10,00,000 mandate **Risk Officer dual approval** prior to trade routing."
             else:
                 res += "✅ All portfolios are currently operating within their approved IPS asset allocation bands."
             return res
@@ -150,16 +173,16 @@ class SmartDeterministicProvider(BaseLLMProvider):
             approval_id = guardrail_evaluation.get("approval_id")
 
             res = f"### Rebalance Recommendation for Client {client_id}\n\n"
-            res += f"**Portfolio Valuation**: ${rebal.get('portfolio_value', 0.0):,.2f}\n"
-            res += f"**Total Rebalance Volume**: ${tot_usd:,.2f}\n\n"
+            res += f"**Portfolio Valuation**: {format_inr(rebal.get('portfolio_value', 0.0))}\n"
+            res += f"**Total Rebalance Volume**: {format_inr(tot_usd)}\n\n"
             res += "#### Recommended Portfolio Adjustments:\n"
             for r in recs:
-                res += f"- **{r['asset_class']}**: {r['action']} ~${r['estimated_amount_usd']:,.2f} ({r['current_pct']}% -> Target {r['target_pct']}%, Δ {r['adjustment_pct']}%)\n"
+                res += f"- **{r['asset_class']}**: {r['action']} ~{format_inr(r['estimated_amount_usd'])} ({r['current_pct']}% -> Target {r['target_pct']}%, Δ {r['adjustment_pct']}%)\n"
 
             res += f"\n---\n"
             if requires_app:
                 res += f"🛡️ **Governance Control Triggered (Dual-Approval Required)**:\n"
-                res += f"This rebalancing recommendation exceeds automated thresholds (> 5.0% shift or > $100,000 order value). "
+                res += f"This rebalancing recommendation exceeds automated thresholds (> 5.0% shift or > ₹10,00,000 order value). "
                 res += f"Per **Dual-Approval & Trading Authority Governance Policy**, direct execution has been **halted** and queued for **Risk Officer authorization**.\n\n"
                 if approval_id:
                     res += f"**Approval Ticket ID**: `{approval_id}` (Status: PENDING REVIEW)"
@@ -187,7 +210,7 @@ class SmartDeterministicProvider(BaseLLMProvider):
                     res += f"- ⚠️ **{b['asset_class']}**: Current {b['current_pct']}% exceeds permitted maximum of {b.get('permitted_max_pct', b.get('permitted_min_pct'))}% (Deviation: +{b['deviation_pct']}%, Severity: {b['severity']})\n"
 
             res += f"\n#### Risk Metrics:\n"
-            res += f"- **1-Day 95% Parametric VaR**: {var.get('var_pct_1d', 'N/A')}% (${var.get('var_amount_usd', 0.0):,.2f})\n"
+            res += f"- **1-Day 95% Parametric VaR**: {var.get('var_pct_1d', 'N/A')}% ({format_inr(var.get('var_amount_usd', 0.0))})\n"
             res += f"- **Annualized Sharpe Ratio**: {sharpe.get('sharpe_ratio', 'N/A')} ({sharpe.get('rating', '')})\n"
             res += f"- **Expected Return**: {sharpe.get('expected_return_annual', 'N/A')}%\n"
             return res
@@ -204,7 +227,7 @@ class SmartDeterministicProvider(BaseLLMProvider):
             alloc = tool_results.get("calculate_allocation", {}).get("result", {})
             client = tool_results.get("get_client_profile", {}).get("result", {})
             res = f"### Portfolio Overview: {client.get('name', client_id or 'Client')}\n\n"
-            res += f"**AUM**: ${client.get('aum', 0.0):,.2f} | **Risk Profile**: {client.get('risk_tolerance', 'Moderate')}\n\n"
+            res += f"**AUM**: {format_inr(client.get('aum', 0.0))} | **Risk Profile**: {client.get('risk_tolerance', 'Moderate')}\n\n"
             if alloc.get("allocation_pct"):
                 res += "#### Asset Allocation:\n"
                 for ac, pct in alloc.get("allocation_pct", {}).items():

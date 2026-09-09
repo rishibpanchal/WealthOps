@@ -1,15 +1,26 @@
 import React, { useState, useEffect } from 'react';
+import { formatISTTime } from '../utils/formatters';
 
 export const LiveOperationsTicker: React.FC = () => {
   const [eventIndex, setEventIndex] = useState(0);
+  const [now, setNow] = useState(() => Date.now());
+
+  useEffect(() => {
+    const clockTimer = setInterval(() => setNow(Date.now()), 1000);
+    return () => clearInterval(clockTimer);
+  }, []);
+
+  const getRecentTime = (secondsAgo: number) => {
+    return formatISTTime(now - secondsAgo * 1000);
+  };
 
   const events = [
-    { time: '15:42:08', text: 'Portfolio C1024 analyzed', status: 'COMPLETE' },
-    { time: '15:42:11', text: 'Policy exception detected (+7.2% equity drift)', status: 'WARNING' },
-    { time: '15:42:14', text: 'Rebalance recommendation formulated ($205,200)', status: 'PENDING' },
-    { time: '15:42:17', text: 'Dual-approval request #8F91 queued', status: 'ROUTED' },
-    { time: '15:43:02', text: 'Chief Risk Officer notified for sign-off', status: 'DISPATCHED' },
-    { time: '15:43:40', text: 'Morning 8:00 AM Cron exception sweep ready', status: 'STANDBY' },
+    { getTime: () => getRecentTime(92), text: 'Portfolio C1024 analyzed', status: 'COMPLETE' },
+    { getTime: () => getRecentTime(74), text: 'Policy exception detected (+7.2% equity drift)', status: 'WARNING' },
+    { getTime: () => getRecentTime(51), text: 'Rebalance recommendation formulated (₹20,52,000)', status: 'PENDING' },
+    { getTime: () => getRecentTime(32), text: 'Dual-approval request #8F91 queued', status: 'ROUTED' },
+    { getTime: () => getRecentTime(14), text: 'Chief Risk Officer notified for sign-off', status: 'DISPATCHED' },
+    { getTime: () => getRecentTime(3), text: 'Morning 08:00 IST Cron exception sweep ready', status: 'STANDBY' },
   ];
 
   useEffect(() => {
@@ -37,7 +48,7 @@ export const LiveOperationsTicker: React.FC = () => {
         borderRadius: '50%',
         background: current.status === 'WARNING' ? 'var(--semantic-amber)' : 'var(--accent-bronze)',
       }} />
-      <span style={{ color: 'var(--text-muted)' }}>{current.time}</span>
+      <span style={{ color: 'var(--text-muted)' }}>{current.getTime()}</span>
       <span style={{ color: 'var(--text-primary)', fontWeight: 500 }}>{current.text}</span>
     </div>
   );

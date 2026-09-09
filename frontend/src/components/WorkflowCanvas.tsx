@@ -23,7 +23,7 @@ const WORKFLOW_NODES: WorkflowNodeDef[] = [
   { id: 'portfolio', stepNumber: 4, label: 'PORTFOLIO ENGINE', sublabel: 'Valuation & Weights', defaultTool: 'calculate_allocation', description: 'Calculates asset class distribution and current market exposure' },
   { id: 'policy', stepNumber: 5, label: 'POLICY RAG', sublabel: 'IPS & SOP Retrieval', defaultTool: 'rag_search', description: 'Cosine vector retrieval against institutional IPS guidelines and SOP-WM-402' },
   { id: 'risk', stepNumber: 6, label: 'RISK ANALYSIS', sublabel: 'Parametric VaR & Drift', defaultTool: 'check_policy', description: 'Computes deviation from target weights, 1-day 95% VaR, and Sharpe' },
-  { id: 'validation', stepNumber: 7, label: 'GUARDRAIL GATE', sublabel: 'Deterministic Limits', defaultTool: 'guardrail_check', description: 'Evaluates $100k volume cap & 5.0% asset class shift rule' },
+  { id: 'validation', stepNumber: 7, label: 'GUARDRAIL GATE', sublabel: 'Deterministic Limits', defaultTool: 'guardrail_check', description: 'Evaluates ₹10 Lakhs volume cap & 5.0% asset class shift rule' },
   { id: 'approval', stepNumber: 8, label: 'DUAL APPROVAL', sublabel: 'Human-in-the-Loop', defaultTool: 'request_approval', description: 'Dispatches sensitive trades to Risk Officer authorization queue' },
   { id: 'audit', stepNumber: 9, label: 'IMMUTABLE AUDIT', sublabel: 'Compliance Ledger', defaultTool: 'record_audit', description: 'Persists cryptographic checksum, parameter diffs, and decision trace' },
 ];

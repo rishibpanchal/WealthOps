@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { UserRole, AuditRecord, ObservabilityStats } from '../types';
 import { api } from '../api';
+import { formatIST } from '../utils/formatters';
 
 interface InstitutionalAuditProps {
   currentRole: UserRole;
@@ -190,7 +191,7 @@ export const InstitutionalAudit: React.FC<InstitutionalAuditProps> = ({ currentR
                     style={{ cursor: 'pointer' }}
                   >
                     <td style={{ fontFamily: 'var(--font-mono)', fontSize: '0.72rem', color: 'var(--text-muted)' }}>
-                      {log.timestamp ? new Date(log.timestamp).toLocaleTimeString() : 'N/A'}
+                      {log.timestamp ? formatIST(log.timestamp) : 'N/A'}
                     </td>
                     <td style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600, color: 'var(--text-primary)' }}>
                       {log.request_id}

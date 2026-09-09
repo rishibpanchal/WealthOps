@@ -73,10 +73,10 @@ export const LivingFinancialVisual: React.FC<LivingFinancialVisualProps> = ({ mo
       const cy = height * 0.52;
 
       nodes = [
-        { id: 'portfolio', label: 'PORTFOLIO', sublabel: '$24.8M AUM', x: cx - 180, y: cy - 140, vx: 0, vy: 0, radius: 5, pulsePhase: 0 },
+        { id: 'portfolio', label: 'PORTFOLIO', sublabel: '₹24.8 Cr AUM', x: cx - 180, y: cy - 140, vx: 0, vy: 0, radius: 5, pulsePhase: 0 },
         { id: 'policy', label: 'POLICY RAG', sublabel: 'IPS-2026-04', x: cx + 160, y: cy - 160, vx: 0, vy: 0, radius: 4, pulsePhase: 1 },
         { id: 'risk', label: 'RISK ENGINE', sublabel: 'VaR 95% 1.85%', x: cx + 220, y: cy + 40, vx: 0, vy: 0, radius: 5, pulsePhase: 2 },
-        { id: 'guardrail', label: 'GUARDRAILS', sublabel: '$100k / 5% DRIFT', x: cx - 40, y: cy - 20, vx: 0, vy: 0, radius: 6, pulsePhase: 3 },
+        { id: 'guardrail', label: 'GUARDRAILS', sublabel: '₹10L / 5% DRIFT', x: cx - 40, y: cy - 20, vx: 0, vy: 0, radius: 6, pulsePhase: 3 },
         { id: 'market', label: 'MARKET CONNECT', sublabel: 'TICK 545.10', x: cx - 220, y: cy + 100, vx: 0, vy: 0, radius: 4, pulsePhase: 4 },
         { id: 'approval', label: 'DUAL APPROVAL', sublabel: 'RISK OFFICER', x: cx + 110, y: cy + 170, vx: 0, vy: 0, radius: 5, pulsePhase: 5 },
         { id: 'audit', label: 'IMMUTABLE AUDIT', sublabel: 'CHECK #8F91', x: cx - 110, y: cy + 200, vx: 0, vy: 0, radius: 4, pulsePhase: 6 },

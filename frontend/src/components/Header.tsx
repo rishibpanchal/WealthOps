@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { UserRole } from '../types';
 import { LiveOperationsTicker } from './LiveOperationsTicker';
+import { formatIST } from '../utils/formatters';
 
 interface HeaderProps {
   currentRole: UserRole;
@@ -23,6 +24,16 @@ const VIEW_TITLES: Record<string, { category: string; title: string }> = {
 
 export const Header: React.FC<HeaderProps> = ({ currentRole, activeView }) => {
   const current = VIEW_TITLES[activeView] || { category: 'Operations', title: 'Overview' };
+  const [liveIST, setLiveIST] = useState(() => formatIST(new Date()));
+
+  useEffect(() => {
+    const updateTime = () => {
+      setLiveIST(formatIST(new Date()));
+    };
+    updateTime();
+    const timer = setInterval(updateTime, 1000);
+    return () => clearInterval(timer);
+  }, []);
 
   return (
     <header style={{
@@ -59,7 +70,7 @@ export const Header: React.FC<HeaderProps> = ({ currentRole, activeView }) => {
         <LiveOperationsTicker />
       </div>
 
-      {/* Date & Compliance indicator */}
+      {/* Live Date & Compliance indicator in Indian Standard Time (IST) */}
       <div style={{ display: 'flex', alignItems: 'center', gap: '20px', fontSize: '0.78rem', whiteSpace: 'nowrap' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
           <span style={{
@@ -77,11 +88,22 @@ export const Header: React.FC<HeaderProps> = ({ currentRole, activeView }) => {
         <div style={{
           fontFamily: 'var(--font-mono)',
           color: 'var(--text-muted)',
-          fontSize: '0.72rem',
+          fontSize: '0.74rem',
           borderLeft: '1px solid var(--border-hairline)',
           paddingLeft: '16px',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '6px',
         }}>
-          09 SEP 2026 · 15:42 EST
+          <span style={{
+            display: 'inline-block',
+            width: '4px',
+            height: '4px',
+            borderRadius: '50%',
+            background: 'var(--accent-bronze)',
+            opacity: 0.8,
+          }} />
+          {liveIST}
         </div>
       </div>
     </header>

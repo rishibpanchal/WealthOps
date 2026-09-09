@@ -185,7 +185,7 @@ export const LandingExperience: React.FC<LandingExperienceProps> = ({
           color: '#8A867E',
         }}>
           <div>09 SEPTEMBER 2026 · SYSTEM STATUS: ONLINE</div>
-          <div>DISCRETIONARY ASSETS: $24.8M MONITORED</div>
+          <div>DISCRETIONARY ASSETS: ₹24.8 Cr MONITORED</div>
           <div>GUARDRAILS: DETERMINISTIC ENFORCEMENT</div>
         </div>
       </section>
@@ -366,7 +366,7 @@ export const LandingExperience: React.FC<LandingExperienceProps> = ({
             { step: '04', title: 'PORTFOLIO', desc: 'Asset Weights' },
             { step: '05', title: 'POLICY RAG', desc: 'IPS Standards' },
             { step: '06', title: 'RISK', desc: 'Parametric VaR' },
-            { step: '07', title: 'GUARDRAIL', desc: '$100k Limit' },
+            { step: '07', title: 'GUARDRAIL', desc: '₹10L Limit' },
             { step: '08', title: 'APPROVAL', desc: 'Dual Control' },
             { step: '09', title: 'AUDIT', desc: 'Immutable Log' },
           ].map((item, i) => (

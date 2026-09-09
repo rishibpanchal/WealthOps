@@ -17,6 +17,7 @@ import {
 } from 'lucide-react';
 import { UserRole, ProcessAnalysisResult } from '../types';
 import { api } from '../api';
+import { formatIST } from '../utils/formatters';
 
 interface AutomationStudioProps {
   currentRole: UserRole;
@@ -123,7 +124,7 @@ export const AutomationStudio: React.FC<AutomationStudioProps> = ({
               <div>
                 <span className="badge badge-blue">{monitorResult.trigger_source}</span>
                 <span style={{ marginLeft: '10px', fontSize: '0.78rem', color: 'var(--text-muted)' }}>
-                  {new Date(monitorResult.timestamp).toLocaleString()}
+                  {formatIST(monitorResult.timestamp)}
                 </span>
               </div>
               <span className="badge badge-rose">
